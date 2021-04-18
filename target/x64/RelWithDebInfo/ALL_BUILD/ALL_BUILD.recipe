@@ -2,13 +2,13 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>E:\sandbox\carray\target\src\Debug\carray-unittests.exe</FullPath>
+      <FullPath>E:\sandbox\carray\target\src\RelWithDebInfo\carray-unittests.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>E:\sandbox\carray\target\src\Debug\gfive.exe</FullPath>
+      <FullPath>E:\sandbox\carray\target\src\RelWithDebInfo\gfive.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>E:\sandbox\carray\target\x64\Debug\ALL_BUILD</FullPath>
+      <FullPath>E:\sandbox\carray\target\x64\RelWithDebInfo\ALL_BUILD</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

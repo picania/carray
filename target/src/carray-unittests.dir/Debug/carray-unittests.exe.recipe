@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\rust-dev\g5_entertainment\target\src\Debug\carray-unittests.exe</FullPath>
+      <FullPath>E:\sandbox\carray\target\src\Debug\carray-unittests.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

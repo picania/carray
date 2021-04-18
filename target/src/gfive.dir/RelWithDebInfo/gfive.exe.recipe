@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>E:\sandbox\carray\target\src\Debug\gfive.exe</FullPath>
+      <FullPath>E:\sandbox\carray\target\src\RelWithDebInfo\gfive.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

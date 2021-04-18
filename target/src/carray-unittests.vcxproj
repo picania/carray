@@ -41,13 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\rust-dev\g5_entertainment\target\src\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">carray-unittests.dir\Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">carray-unittests</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\rust-dev\g5_entertainment\target\src\RelWithDebInfo\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">RelWithDebInfo\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">carray-unittests.dir\RelWithDebInfo\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">carray-unittests</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
@@ -87,8 +87,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/rust-dev/g5_entertainment/target/src/Debug/carray-unittests.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/rust-dev/g5_entertainment/target/src/Debug/carray-unittests.pdb</ProgramDataBaseFile>
+      <ImportLibrary>Debug/carray-unittests.lib</ImportLibrary>
+      <ProgramDataBaseFile>Debug/carray-unittests.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -127,8 +127,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/rust-dev/g5_entertainment/target/src/RelWithDebInfo/carray-unittests.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/rust-dev/g5_entertainment/target/src/RelWithDebInfo/carray-unittests.pdb</ProgramDataBaseFile>
+      <ImportLibrary>RelWithDebInfo/carray-unittests.lib</ImportLibrary>
+      <ProgramDataBaseFile>RelWithDebInfo/carray-unittests.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -136,9 +136,9 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="C:\rust-dev\g5_entertainment\src\catch.cpp" />
-    <ClInclude Include="C:\rust-dev\g5_entertainment\src\carray.hpp" />
-    <ClCompile Include="C:\rust-dev\g5_entertainment\src\carray-unittests.cpp" />
+    <ClCompile Include="..\..\src\catch.cpp" />
+    <ClInclude Include="..\..\src\carray.hpp" />
+    <ClCompile Include="..\..\src\carray-unittests.cpp" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

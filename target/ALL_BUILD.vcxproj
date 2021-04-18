@@ -67,11 +67,11 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\rust-dev\g5_entertainment\target\src\carray-unittests.vcxproj">
+    <ProjectReference Include="src\carray-unittests.vcxproj">
       <Project>{B16FBDB9-231F-39BB-9BEC-661CEC0DBB74}</Project>
       <Name>carray-unittests</Name>
     </ProjectReference>
-    <ProjectReference Include="C:\rust-dev\g5_entertainment\target\src\gfive.vcxproj">
+    <ProjectReference Include="src\gfive.vcxproj">
       <Project>{D2B760DB-06A6-3BB4-B15D-2761259A862D}</Project>
       <Name>gfive</Name>
     </ProjectReference>
