@@ -24,7 +24,9 @@ public:
     , m_capacity{0}
   {}
 
-  CArray(const CArray& _array)
+  CArray(
+      const CArray& _array
+    )
     : m_ptr{nullptr}
     , m_size{_array.m_size}
     , m_capacity{_array.m_size}
@@ -39,7 +41,9 @@ public:
     }
   }
 
-  CArray& operator=(const CArray& _array)
+  CArray& operator=(
+      const CArray& _array
+    )
   {
     auto tmp = _array;
     tmp.swap(*this);
@@ -67,17 +71,19 @@ public:
     return m_ptr + m_size;
   }
 
-  iterator begin() const
+  const_iterator begin() const
   {
     return m_ptr;
   }
 
-  iterator end() const
+  const_iterator end() const
   {
     return m_ptr + m_size;
   }
 
-  void push_back(const T& _value)
+  void push_back(
+      const T& _value
+    )
   {
     if (m_size == m_capacity)
     {
@@ -103,7 +109,10 @@ public:
     m_size += 1;
   }
 
-  void insert(size_t _index, const T& _value)
+  void insert(
+      size_t _index,
+      const T& _value
+    )
   {
     assert(_index <= m_size);
 
@@ -149,7 +158,9 @@ public:
     m_size += 1;
   }
 
-  void erase(size_t _index)
+  void erase(
+      size_t _index
+    )
   {
     assert(_index < m_size);
 
@@ -164,18 +175,21 @@ public:
     m_size -= 1;
   }
 
-  void erase(const_iterator from, const_iterator to)
+  void erase(
+      const_iterator _from,
+      const_iterator _to
+    )
   {
-    const auto len = std::distance(from, to);
+    const auto len = std::distance(_from, _to);
     assert(len >= 0);
 
-    for (auto it = from; it != to; ++it)
+    for (auto it = _from; it != _to; ++it)
     {
       std::allocator_traits<std::allocator<T>>::destroy(m_allocator, it);
     }
 
     const auto tail = end();
-    for (auto it = to, dest = from; it != tail; ++it, ++dest)
+    for (auto it = _to, dest = _from; it != tail; ++it, ++dest)
     {
       std::allocator_traits<std::allocator<T>>::construct(m_allocator, dest, *it);
       std::allocator_traits<std::allocator<T>>::destroy(m_allocator, it);
@@ -203,19 +217,25 @@ public:
     return m_size;
   }
 
-  T& operator[](size_t _index)
+  T& operator[](
+      size_t _index
+    )
   {
     assert(_index < m_size);
     return m_ptr[_index];
   }
 
-  const T& operator[](size_t _index) const
+  const T& operator[](
+      size_t _index
+    ) const
   {
     assert(_index < m_size);
     return m_ptr[_index];
   }
 
-  void swap(CArray& _other)
+  void swap(
+      CArray& _other
+    )
   {
     std::swap(m_ptr, _other.m_ptr);
     std::swap(m_size, _other.m_size);

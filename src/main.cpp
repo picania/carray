@@ -9,11 +9,13 @@
 #include "carray.hpp"
 
 template<typename T>
-void print(const CArray<T>& array)
+void print(
+    const CArray<T>& _array
+  )
 {
   bool first = true;
   std::cout << '[';
-  for (const auto& item : array)
+  for (const auto& item : _array)
   {
     if (!first)
     {
@@ -103,7 +105,9 @@ void second_test()
   print(array);
 }
 
-int main(int, char**)
+int main(
+    int, char**
+  )
 {
   first_test();
   second_test();
