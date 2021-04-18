@@ -1,7 +1,4 @@
 #include <algorithm>
-#include <cassert>
-#include <memory>
-#include <random>
 
 #include "catch.hpp"
 #include "carray.hpp"
