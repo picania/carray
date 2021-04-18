@@ -1,0 +1,10 @@
+^C:\RUST-DEV\G5_ENTERTAINMENT\SRC\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/rust-dev/g5_entertainment -BC:/rust-dev/g5_entertainment/target --check-stamp-file C:/rust-dev/g5_entertainment/target/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

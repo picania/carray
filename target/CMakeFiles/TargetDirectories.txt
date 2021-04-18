@@ -1,0 +1,3 @@
+C:/rust-dev/g5_entertainment/target/CMakeFiles/ALL_BUILD.dir
+C:/rust-dev/g5_entertainment/target/src/CMakeFiles/gfive.dir
+C:/rust-dev/g5_entertainment/target/src/CMakeFiles/carray-unittests.dir
