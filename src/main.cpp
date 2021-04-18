@@ -47,15 +47,11 @@ void first_test()
   print(array);
 
   std::cout << "Deleting in steps of 2:\n";
-  {
-    auto temp = CArray<int>{};
-    size_t index = 0;
-    std::copy_if(array.begin(), array.end(), std::back_inserter(temp), [index](int num) mutable {
-        return index++ % 2 == 1;
-      });
-
-    std::swap(array, temp);
-  }
+  size_t index = 0;
+  auto it = std::remove_if(array.begin(), array.end(), [index](int num) mutable {
+      return index++ % 2 == 1;
+    });
+  array.erase(it, array.end());
   print(array);
 
   std::cout << "Inserting 10 random numbers:\n";
@@ -92,14 +88,10 @@ void second_test()
   print(array);
 
   std::cout << "Deleting words with 'abcde':\n";
-  {
-    auto temp = CArray<std::string>{};
-    std::copy_if(array.begin(), array.end(), std::back_inserter(temp), [](const std::string& word) {
-        return word.find_first_of("abcde") == std::string::npos;
-      });
-
-    std::swap(array, temp);
-  }
+  auto it = std::remove_if(array.begin(), array.end(), [](const std::string& word) {
+      return word.find_first_of("abcde") != std::string::npos;
+    });
+  array.erase(it, array.end());
   print(array);
 
   std::cout << "Inserting 3 random words:\n";

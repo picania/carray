@@ -31,8 +31,11 @@ public:
   {
     if (_array.m_size != 0)
     {
-      m_ptr = std::make_unique<T[]>(_array.m_size);
-      std::copy(_array.m_ptr.get(), _array.m_ptr.get() + _array.m_size, m_ptr.get());
+      m_ptr = std::allocator_traits<std::allocator<T>>::allocate(m_allocator, m_capacity);
+      for (size_t i = 0; i != _array.m_size; ++i)
+      {
+        std::allocator_traits<std::allocator<T>>::construct(m_allocator, &m_ptr[i], _array.m_ptr[i]);
+      }
     }
   }
 
@@ -44,47 +47,59 @@ public:
     return *this;
   }
 
-  CArray(CArray&&) = default;
-  CArray& operator=(CArray&&) = default;
+  ~CArray()
+  {
+    for (size_t i = 0; i != m_size; ++i)
+    {
+      std::allocator_traits<std::allocator<T>>::destroy(m_allocator, &m_ptr[i]);
+    }
 
-  ~CArray() = default;
+    std::allocator_traits<std::allocator<T>>::deallocate(m_allocator, m_ptr, m_capacity);
+  }
 
   iterator begin()
   {
-    return m_ptr.get();
+    return m_ptr;
   }
 
   iterator end()
   {
-    return m_ptr.get() + m_size;
+    return m_ptr + m_size;
   }
 
   iterator begin() const
   {
-    return m_ptr.get();
+    return m_ptr;
   }
 
   iterator end() const
   {
-    return m_ptr.get() + m_size;
+    return m_ptr + m_size;
   }
 
   void push_back(const T& _value)
   {
     if (m_size == m_capacity)
     {
+      const size_t old_capacity = m_capacity;
       m_capacity = std::max<size_t>(1, m_capacity * CArray::factor);
-      auto ptr = std::make_unique<T[]>(m_capacity);
+      T* ptr = std::allocator_traits<std::allocator<T>>::allocate(m_allocator, m_capacity);
 
       if (m_ptr)
       {
-        std::copy(m_ptr.get(), m_ptr.get() + m_size, ptr.get());
+        for (size_t i = 0; i != m_size; ++i)
+        {
+          std::allocator_traits<std::allocator<T>>::construct(m_allocator, &ptr[i], m_ptr[i]);
+          std::allocator_traits<std::allocator<T>>::destroy(m_allocator, &m_ptr[i]);
+        }
+
+        std::allocator_traits<std::allocator<T>>::deallocate(m_allocator, m_ptr, old_capacity);
       }
 
-      m_ptr = std::move(ptr);
+      m_ptr = ptr;
     }
 
-    m_ptr[m_size] = _value;
+    std::allocator_traits<std::allocator<T>>::construct(m_allocator, &m_ptr[m_size], _value);
     m_size += 1;
   }
 
@@ -94,23 +109,43 @@ public:
 
     if (m_size == m_capacity)
     {
+      const auto old_capacity = m_capacity;
       m_capacity = std::max<size_t>(1, m_capacity * CArray::factor);
-      auto ptr = std::make_unique<T[]>(m_capacity);
+      T* ptr = std::allocator_traits<std::allocator<T>>::allocate(m_allocator, m_capacity);
 
       if (m_ptr)
       {
-        std::copy(m_ptr.get(), m_ptr.get() + _index, ptr.get());
-        std::copy(m_ptr.get() + _index, m_ptr.get() + m_size, ptr.get() + _index + 1);
+        for (size_t i = 0; i != _index; ++i)
+        {
+          std::allocator_traits<std::allocator<T>>::construct(m_allocator, &ptr[i], m_ptr[i]);
+          std::allocator_traits<std::allocator<T>>::destroy(m_allocator, &m_ptr[i]);
+        }
+
+        for (size_t i = _index; i != m_size; ++i)
+        {
+          std::allocator_traits<std::allocator<T>>::construct(m_allocator, &ptr[i + 1], m_ptr[i]);
+          std::allocator_traits<std::allocator<T>>::destroy(m_allocator, &m_ptr[i]);
+        }
+
+        std::allocator_traits<std::allocator<T>>::deallocate(m_allocator, m_ptr, old_capacity);
       }
 
-      m_ptr = std::move(ptr);
+      m_ptr = ptr;
     }
     else
     {
-      std::copy_backward(m_ptr.get() + _index, m_ptr.get() + m_size, m_ptr.get() + m_size + 1);
+      // copy backward
+      auto it = m_ptr + m_size - 1;
+      auto dest = m_ptr + m_size;
+      auto tail = m_ptr + _index;
+      for (; dest != tail; --it, --dest)
+      {
+        std::allocator_traits<std::allocator<T>>::construct(m_allocator, dest, *it);
+        std::allocator_traits<std::allocator<T>>::destroy(m_allocator, it);
+      }
     }
 
-    m_ptr[_index] = _value;
+    std::allocator_traits<std::allocator<T>>::construct(m_allocator, &m_ptr[_index], _value);
     m_size += 1;
   }
 
@@ -118,13 +153,43 @@ public:
   {
     assert(_index < m_size);
 
-    std::rotate(m_ptr.get() + _index, m_ptr.get() + _index + 1, m_ptr.get() + m_size);
+    std::allocator_traits<std::allocator<T>>::destroy(m_allocator, &m_ptr[_index]);
+
+    for (size_t i = _index + 1, j = _index; i != m_size; ++i, ++j)
+    {
+      std::allocator_traits<std::allocator<T>>::construct(m_allocator, &m_ptr[j], m_ptr[i]);
+      std::allocator_traits<std::allocator<T>>::destroy(m_allocator, &m_ptr[i]);
+    }
+
     m_size -= 1;
+  }
+
+  void erase(const_iterator from, const_iterator to)
+  {
+    const auto len = std::distance(from, to);
+    assert(len >= 0);
+
+    for (auto it = from; it != to; ++it)
+    {
+      std::allocator_traits<std::allocator<T>>::destroy(m_allocator, it);
+    }
+
+    const auto tail = end();
+    for (auto it = to, dest = from; it != tail; ++it, ++dest)
+    {
+      std::allocator_traits<std::allocator<T>>::construct(m_allocator, dest, *it);
+      std::allocator_traits<std::allocator<T>>::destroy(m_allocator, it);
+    }
+
+    m_size -= len;
   }
 
   void clear()
   {
-    // Например, для std::vector стандарт требует, чтобы clear() не менял емкость вектора.
+    for (size_t i = 0; i != m_size; ++i)
+    {
+      std::allocator_traits<std::allocator<T>>::destroy(m_allocator, &m_ptr[i]);
+    }
     m_size = 0;
   }
 
@@ -155,10 +220,12 @@ public:
     std::swap(m_ptr, _other.m_ptr);
     std::swap(m_size, _other.m_size);
     std::swap(m_capacity, _other.m_capacity);
+    std::swap(m_allocator, _other.m_allocator);
   }
 
 private:
-  std::unique_ptr<T[]> m_ptr;
+  T* m_ptr;
   size_t m_size;
   size_t m_capacity;
+  std::allocator<T> m_allocator;
 };

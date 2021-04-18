@@ -12,6 +12,7 @@ TEST_CASE("check default constructor", "[CArray]")
 
   REQUIRE(array.size() == 0);
   REQUIRE(array.capacity() == 0);
+  REQUIRE(array.begin() == array.end());
 }
 
 TEST_CASE("check copy constructor", "[CArray]")
@@ -94,6 +95,40 @@ TEST_CASE("check erase item", "[CArray]")
   CHECK(array[0] == 10);
   CHECK(array[1] == 20);
   CHECK(array[2] == 30);
+
+  array.erase(1);
+  REQUIRE(array.size() == 2);
+  REQUIRE(array.capacity() >= 2);
+  CHECK(array[0] == 10);
+  CHECK(array[1] == 30);
+
+  array.erase(1);
+  REQUIRE(array.size() == 1);
+  REQUIRE(array.capacity() >= 1);
+  CHECK(array[0] == 10);
+
+  array.erase(0);
+  REQUIRE(array.size() == 0);
+  REQUIRE(array.capacity() >= 0);
+}
+
+TEST_CASE("check erase range", "[CArray]")
+{
+  auto array = CArray<int>{};
+
+  array.push_back(10);
+  array.push_back(20);
+  array.push_back(30);
+  array.push_back(40);
+  array.push_back(50);
+
+  const auto from = array.begin() + 1;
+  const auto to = array.begin() + 4;
+  array.erase(from, to);
+  REQUIRE(array.size() == 2);
+  REQUIRE(array.capacity() >= 2);
+  CHECK(array[0] == 10);
+  CHECK(array[1] == 50);
 }
 
 TEST_CASE("check clear array", "[CArray]")
